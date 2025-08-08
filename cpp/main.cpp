@@ -1,90 +1,94 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <cctype>
+#include <locale>
+#include <cwchar>
+#include <string>
+#include <windows.h>
 
 int main() {
-	
-	std::vector<char>* vec = new std::vector<char>();
-	char input;
-	for (int i = 0; i < 200; ++i) {
-		std::cin.get(input);
-		if (input == '\n')
-			break;
-		vec->push_back(input);
-	}
-	vec->push_back('\0');
 
-	std::vector<char>* original = new std::vector<char>(*vec);
+    // Налаштування консолі на Unicode UTF-8
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
 
-	delete vec;
-	vec = nullptr;
+    // Встановлення локалі
+    std::locale::global(std::locale("uk_UA.UTF-8"));
+    std::wcin.imbue(std::locale());
+    std::wcout.imbue(std::locale());
 
-	std::cout << "Original: ";
-	for (char c : *original )
-		std::cout << c;
-	std::cout << std::endl;
+	std::wcout << L"Enter a string (max 200 characters):" << std::endl;
+    std::wstring line;
+    std::getline(std::wcin, line);
+    std::vector<wchar_t> vec(line.begin(), line.end());
+    vec.push_back(L'\0');
 
-	std::vector<char>* orig = new std::vector<char>();
-	char* ptrC = original->data();
-	while (*ptrC == ' ')
-		++ptrC;
+    std::vector<wchar_t> original = vec;
 
-	bool was_space = false;
-	do
-	{
-		if (*ptrC == ' ' && !was_space) {
-			orig->push_back(*ptrC);
-			was_space = true;
-			++ptrC;
-		}
-		else if (*ptrC == ' ' && was_space) {
-			++ptrC;
-			was_space = true;
-		}
-		else if (*ptrC != ' ') {
-			orig->push_back(*ptrC);
-			++ptrC;
-			was_space = false;
-		}
+    std::wcout << L"Original: ";
+    for (wchar_t c : original)
+        std::wcout << c;
+    std::wcout << std::endl << std::endl;
 
-	} while (*ptrC != '\0');
-	delete original;
-	original = nullptr;
-	delete ptrC;
-	ptrC = nullptr;
+    std::vector<wchar_t> orig;
+    wchar_t* ptrC = original.data();
 
+    while (*ptrC == ' ')
+        ++ptrC;
 
-	std::cout << "Without many spaces: ";
-	for (char c : *orig)
-		std::cout << c;
-	std::cout << std::endl;
+    bool was_space = false;
+    do {
+        if (*ptrC == ' ' && !was_space) {
+            orig.push_back(*ptrC);
+            was_space = true;
+        }
+        else if (*ptrC != ' ') {
+            orig.push_back(*ptrC);
+            was_space = false;
+        }
+        ++ptrC;
+    } while (*ptrC != '\0');
 
+    while (!orig.empty() && orig.back() == L' ')
+        orig.pop_back();
 
-	const std::vector<char> vowels{'a', 'e', 'y', 'i', 'o'};
-	int count = 0;
+    std::wcout << L"Without many spaces: ";
+    for (wchar_t c : orig)
+        std::wcout << c;
+    std::wcout << std::endl;
 
-	for (char c : *orig) {
-		for (int i = 0; i < vowels.size(); ++i) {
-			if (std::tolower(c) == vowels[i]) {
-				++count;
-				break;
-			}
-		}
-	}
-	std::cout << "Number of vowels: " << count << std::endl << std::endl;
+    /* ===== Count vowels ===== */
+    const std::vector<wchar_t> vowels{ L'a',L'e',L'y',L'i',L'o',L'u',L'а',L'е',L'є',L'и',L'і',L'о',L'у',L'ю',L'я' };
+    int count = 0;
 
-	/*  Revers  */
+    for (wchar_t c : orig) {
+        for (wchar_t v : vowels) {
+            if (towlower(c) == v) {
+                ++count;
+                break;
+            }
+        }
+    }
+    std::wcout << L"Number of vowels: " << count << std::endl << std::endl;
 
-	std::vector<char>* reversed = new std::vector<char>();
-	char* ptr = orig->data() + orig->size() - 1;
+    /* ===== Reverse ===== */
+    std::vector<wchar_t> reversed;
+    if (!orig.empty()) {
+        wchar_t* ptr = orig.data() + orig.size() - 1;
+        while (ptr >= orig.data()) {
+            reversed.push_back(*ptr);
+            --ptr;
+        }
+    }
+    else {
+        std::wcout << L"Nothing to reverse!" << std::endl;
+        return 0;
+    }
 
+    std::wcout << L"Reversed: ";
+    for (wchar_t c : reversed)
+        std::wcout << c;
+    std::wcout << std::endl;
 
-
-
-	return 0;
+    return 0;
 }
-
-
-//Вивести його у зворотному порядку, використовуючи тільки вказівники(не індекси).
-
