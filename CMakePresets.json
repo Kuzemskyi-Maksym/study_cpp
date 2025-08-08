@@ -1,0 +1,78 @@
+﻿{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "windows-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl.exe",
+        "CMAKE_CXX_COMPILER": "clang-cl.exe",
+        "CMAKE_LINKER": "lld-link.exe",
+        "CMAKE_CXX_STANDARD": "20"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    }
+  ]
+}
+
+//{
+//  "version": 3,
+//  "configurePresets": [
+//    {
+//      "name": "windows-base",
+//      "hidden": true,
+//      "generator": "Ninja",
+//      "binaryDir": "${sourceDir}/out/build/${presetName}",
+//      "installDir": "${sourceDir}/out/install/${presetName}",
+//      "cacheVariables": {
+//        "CMAKE_C_COMPILER": "clang-cl.exe",
+//        "CMAKE_CXX_COMPILER": "clang-cl.exe",
+//        "CMAKE_LINKER": "lld-link.exe"
+//      },
+//      "condition": {
+//        "type": "equals",
+//        "lhs": "${hostSystemName}",
+//        "rhs": "Windows"
+//      }
+//    },
+//    {
+//      "name": "windows-clang",
+//      "inherits": "windows-base",
+//      "generator": "Ninja",
+//      "binaryDir": "${sourceDir}/build",
+//      "cacheVariables": {
+//        "CMAKE_CXX_COMPILER": "clang-cl.exe",
+//        "CMAKE_CXX_FLAGS": "/std:c++20 /Zc:__cplusplus /permissive-",
+//        "CMAKE_CXX_STANDARD": ""
+//      }
+//    },
+//    {
+//      "name": "x64-debug",
+//      "displayName": "x64 Debug",
+//      "inherits": "windows-base",
+//      "architecture": {
+//        "value": "x64",
+//        "strategy": "external"
+//      },
+//      "cacheVariables": {
+//        "CMAKE_BUILD_TYPE": "Debug"
+//      }
+//    },
+//    {
+//      "name": "x64-release",
+//      "displayName": "x64 Release",
+//      "inherits": "windows-base",
+//      "cacheVariables": {
+//        "CMAKE_BUILD_TYPE": "Release"
+//      }
+//    }
+//  ]
+//}
+
