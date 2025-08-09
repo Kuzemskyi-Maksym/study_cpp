@@ -23,7 +23,7 @@ endif()
 
 # Додаємо виконуваний файл (заголовки не потрібно явно вказувати)
 add_executable(ITVDN_study 
-    cpp/main.cpp    )
+    cpp/main.cpp     "include/Car.h" "cpp/Car.cpp")
 
 # Вказуємо шляхи до заголовкових файлів
 target_include_directories(ITVDN_study PRIVATE
