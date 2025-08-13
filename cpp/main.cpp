@@ -7,6 +7,8 @@ void useCar(const std::unique_ptr<Car>& car);
 
 int main() {
 
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+
 	auto car_ptr = createCar("Toyota", 2020);
 	car_ptr->displayInfo();
 
@@ -23,7 +25,8 @@ int main() {
     return 0;
 }
 
-std::unique_ptr<Car> createCar(const std::string& brand, int year) {
+template <typename T>
+std::unique_ptr<Car> createCar(const T& brand, int year) {
     return std::make_unique<Car>(brand, year);
 }
 

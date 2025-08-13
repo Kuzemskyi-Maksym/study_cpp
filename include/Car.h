@@ -8,6 +8,7 @@ private:
 public:
 	Car();
 	Car(const std::string& brand, int year);
+
 	~Car();
 
 	void setBrand(const std::string& nbrand);
